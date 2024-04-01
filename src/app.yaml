@@ -1,7 +1,6 @@
 runtime: python312
 
 instance_class: F1
-service: threat-vigil-portal
 
 entrypoint: streamlit run app.py --server.port $PORT --logger.level=debug
 
