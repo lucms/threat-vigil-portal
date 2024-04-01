@@ -1,0 +1,14 @@
+streamlit
+psycopg2
+google-cloud-secret-manager
+httpx-oauth
+google-cloud-bigquery
+google-cloud-storage
+google-cloud-logging
+google-api-python-client
+google-api-core
+Pillow
+pyarrow
+db-dtypes
+pandas
+protobuf
