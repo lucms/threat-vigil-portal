@@ -17,7 +17,7 @@ steps:
   - '--region'
   - 'us-central1'
   - '--allow-unauthenticated'
-  - 'max-instances'
+  - '--max-instances'
   - '1'
 images:
 - 'gcr.io/$PROJECT_ID/threat-vigil-portal:$COMMIT_SHA'
