@@ -72,7 +72,7 @@ def authenticate_user(main_function):
     client_secret = client_data['client_secret']
     redirect_uri = client_data['redirect_uris']
 
-    state_param = st.experimental_get_query_params().get('state', [None])[0]
+    state_param = st.query_params.to_dict().get('state', [None])[0]
 
     client = GoogleOAuth2(client_id, client_secret)
     authorization_url = asyncio.run(
@@ -86,10 +86,10 @@ def authenticate_user(main_function):
 
     if st.session_state['token'] is None:
         try:
-            code = st.experimental_get_query_params()['code']
+            code = st.query_params.to_dict()['code']
         except:
             st.write(f'''<h1>
-                Pleasae, login at <a target="_self"
+                Please, login at <a target="_self"
                 href="{authorization_url}">this link</a></h1>''',
                      unsafe_allow_html=True)
         else:

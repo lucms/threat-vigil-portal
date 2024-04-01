@@ -1,5 +1,6 @@
 import app_flow
 import logging
+import utils
 import streamlit as st
 
 
@@ -21,4 +22,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    utils.authenticate_user(main)

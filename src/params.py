@@ -1,6 +1,6 @@
 env = 'prod'
 BUCKET_NAME = "threat-vigil-tmp-files"
-OAUTH_CLIENT_SECRET = "threat-vigil-portal-oauth-client"
+OAUTH_CLIENT_SECRET = "threat-vigil-portal-oauth-client-prod"
 
 EMPTY_PAGE_MESSAGE = """\
 ## Nothing to display
@@ -8,8 +8,7 @@ EMPTY_PAGE_MESSAGE = """\
 If you think this is an error, please contact the system admin at info@threatvigil.com.
 """
 
-#TODO ADD
-SECRET_PROJECT_ID = None
+SECRET_PROJECT_ID = 964526035193
 
 DEFAULT_ENCODING = 'iso-8859-1'
 DATASETS_BLOB = 'predictions/{dataset}.csv'
