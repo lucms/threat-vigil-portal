@@ -117,7 +117,14 @@ def authenticate_user(main_function):
                     st.session_state.user_id = user_id
                     st.session_state.user_email = user_email
                     logging.info(f'INFO:: Session started for user {user_email}')
-                    main_function()
+
+                    if user_email not in ADMIN_EMAILS:
+                        st.markdown('# Sorry, the Threat Vigil Portal is not available for general access yet.')
+                    else:
+                        main_function()
 
     else:
-        main_function()
+        if user_email not in ADMIN_EMAILS:
+            st.markdown('# Sorry, the Threat Vigil Portal is not available for general access yet.')
+        else:
+            main_function()

@@ -23,4 +23,3 @@ def main():
 
 if __name__ == '__main__':
     utils.authenticate_user(main)
-    #main()
