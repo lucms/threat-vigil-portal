@@ -1,4 +1,4 @@
-env = 'prod'
+ENV = 'prod'
 BUCKET_NAME = "threat-vigil-tmp-files"
 OAUTH_CLIENT_SECRET = "threat-vigil-portal-oauth-client-prod"
 
@@ -8,26 +8,41 @@ EMPTY_PAGE_MESSAGE = """\
 If you think this is an error, please contact the system admin at info@threatvigil.com.
 """
 
+ADMIN_EMAILS = [
+    'lucas.miura.threat.vigil@gmail.com',
+    'info@threatvigil.com'
+]
+
 SECRET_PROJECT_ID = 964526035193
 
 DEFAULT_ENCODING = 'iso-8859-1'
-DATASETS_BLOB = 'predictions/{dataset}.csv'
 LOCAL_FILENAME = './{dataset}.csv'
+
+DATASETS = [
+    {
+        'name': 'city_state_predictions',
+        'blob': 'predictions/city_state_predictions.csv'
+    },
+    {
+        'name': 'state_predictions',
+        'blob': 'predictions/state_predictions.csv'
+    },
+    {
+        'name': 'base_data',
+        'blob': 'data/pipelines/gva_weather_guns_city_level.csv'
+    }
+]
 
 PAGE_NAMES = [
     'Home',
-    'Search Page',
+    'Mass Shooting Threat Assessment',
     'Admin Page'
-]
-
-DATASET_NAMES = [
-    'city_state_predictions',
-    'state_predictions'
 ]
 
 DATASET_SORT_COLUMNS = {
     'city_state_predictions': ['yearmonth', 'state', 'city'],
-    'state_predictions': ['yearmonth', 'state']
+    'state_predictions': ['yearmonth', 'state'],
+    'base_data': ['yearmonth', 'state', 'city']
 }
 
 PREDICTION_DESCRIPTIONS = {

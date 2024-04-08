@@ -16,8 +16,10 @@ def load_datasets():
     bucket = storage_client.get_bucket(BUCKET_NAME)
     
     datasets = {}
-    for dataset_name in DATASET_NAMES:
-        blob = bucket.blob(DATASETS_BLOB.format(dataset=dataset_name))
+    for dataset in DATASETS:
+        dataset_name = dataset['name']
+
+        blob = bucket.blob( dataset['blob'])
     
         # Download file and read as pickle
         local_filename = LOCAL_FILENAME.format(dataset=dataset_name)
@@ -34,18 +36,25 @@ def load_datasets():
 
 def display_sidebar(datasets):
 
+    page_names = PAGE_NAMES
+    if st.session_state.user_email not in ADMIN_EMAILS:
+        page_names = [
+            'Home',
+            'Mass Shooting Threat Assessment'
+        ]
+
     selected_page = st.sidebar.radio(
         'Select a page',
-        PAGE_NAMES
+        page_names
     )
 
-    if selected_page == 'Search Page':
+    if selected_page == 'Mass Shooting Threat Assessment':
         state = st.sidebar.selectbox(
             'Select a state',
-            datasets['city_state_predictions']['state'].unique()
+            datasets['base_data']['state'].unique()
         )
 
-        cities = datasets['city_state_predictions'].query(
+        cities = datasets['base_data'].query(
             f'state == "{state}"'
         )['city'].unique()
 
@@ -54,6 +63,25 @@ def display_sidebar(datasets):
             cities
         )
 
+    elif selected_page == 'Admin Page':
+
+        toggle_city_state = st.sidebar.toggle('Filter by city and state', False)
+
+        if toggle_city_state:
+            city = st.sidebar.selectbox(
+                'Select a city',
+                datasets['base_data']['city'].unique()
+            )
+
+            state = st.sidebar.selectbox(
+                'Select a state',
+                datasets['base_data']['state'].unique()
+            )
+        
+        else:
+            city = None
+            state = None
+        
     else:
         city = None
         state = None
@@ -85,15 +113,20 @@ def filter_datasets(datasets, selected_filters):
         f'state == "{state}"'
     )
 
+    base_data_df = datasets['base_data'].query(
+        f'city == "{city}" and state == "{state}"'
+    )
+
     filtered_datasets = {
         'city_state_predictions': city_state_predictions_df,
-        'state_predictions': state_predictions_df
+        'state_predictions': state_predictions_df,
+        'base_data': base_data_df
     }
 
     return filtered_datasets
 
 
-def load_page(selected_page, filtered_datasets, selected_filters):
+def load_page(selected_page, datasets, filtered_datasets, selected_filters):
     """
     Loads the page based on the context.
     """
@@ -104,10 +137,12 @@ def load_page(selected_page, filtered_datasets, selected_filters):
             selected_filters
         )
     
-    elif selected_page == 'Search Page':
+    elif selected_page == 'Mass Shooting Threat Assessment':
         return search_page.display_page(
             filtered_datasets['city_state_predictions'],
             filtered_datasets['state_predictions'],
+            filtered_datasets['base_data'],
+            datasets['base_data'],
             selected_filters
         )
     

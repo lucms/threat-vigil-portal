@@ -70,14 +70,16 @@ def authenticate_user(main_function):
     client_data = fetch_oauth_client_data()
     client_id = client_data['client_id']
     client_secret = client_data['client_secret']
-    redirect_uri = client_data['redirect_uris']
+    redirect_uri = client_data['redirect_uris'][ENV]
+
+    print(redirect_uri)
 
     state_param = st.query_params.to_dict().get('state', [None])[0]
 
     client = GoogleOAuth2(client_id, client_secret)
     authorization_url = asyncio.run(
         write_authorization_url(client=client,
-                                redirect_uri=redirect_uri,
+                                redirect_uri=redirect_uri[-1],
                                 state=state_param)
     )
 
@@ -88,32 +90,23 @@ def authenticate_user(main_function):
         try:
             code = st.query_params.to_dict()['code']
         except:
-            st.write(f'''<h1>
-                Please, login at <a target="_self"
-                href="{authorization_url}">this link</a></h1>''',
-                     unsafe_allow_html=True)
+            st.markdown(f'''# Please, login at [this link]({authorization_url})''')
         else:
             # Verify token is correct:
             try:
                 token = asyncio.run(
                     write_access_token(client=client,
                                        redirect_uri=redirect_uri,
-                                       code=code))
+                                       code=code)
+                )
             except:
-                st.write(f'''<h1>
-                    Access denied or there was an error loading the page.
-                    If you think this is an error, please try again: <a target="_self"
-                    href="{authorization_url}">link</a></h1>''',
-                         unsafe_allow_html=True)
+                st.markdown(f'''# Please, login again [this link]({authorization_url})''')
             else:
                 # Check if token has expired:
                 if token.is_expired():
                     if token.is_expired():
-                        st.write(f'''<h1>
-                        Your session has expired.
-                        Please, <a target="_self" href="{authorization_url}">
-                        log-in </a> again.</h1>
-                        ''')
+                        st.markdown(f'''# Please, login again [this link]({authorization_url})''')
+
                 else:
                     st.session_state.token = token
 
