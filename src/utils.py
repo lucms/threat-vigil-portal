@@ -124,7 +124,7 @@ def authenticate_user(main_function):
                         main_function()
 
     else:
-        if user_email not in ADMIN_EMAILS:
+        if st.session_state.user_email not in ADMIN_EMAILS:
             st.markdown('# Sorry, the Threat Vigil Portal is not available for general access yet.')
         else:
             main_function()
