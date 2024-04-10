@@ -11,7 +11,8 @@ If you think this is an error, please contact the system admin at info@threatvig
 ADMIN_EMAILS = [
     'lucas.miura.threat.vigil@gmail.com',
     'info@threatvigil.com',
-    'threatvigil@gmail.com'
+    'threatvigil@gmail.com',
+    'luc.ms22@gmail.com'
 ]
 
 SECRET_PROJECT_ID = 964526035193
