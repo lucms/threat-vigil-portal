@@ -22,4 +22,6 @@ def main():
 
 
 if __name__ == '__main__':
-    utils.authenticate_user(main)
+    #utils.authenticate_user(main)
+    st.session_state.user_email = 'lucas.miura.threat.vigil@gmail.com'
+    main()

@@ -48,6 +48,12 @@ DATASET_SORT_COLUMNS = {
 }
 
 PREDICTION_DESCRIPTIONS = {
+    'Very Low': '''\
+This category suggests that the likelihood of the predicted event occurring \
+is relatively small, based on the historical data and patterns the model has learned. \
+While it's not impossible for the event to happen, the model indicates that under current \
+and historical conditions, it's unlikely.
+''',
     'Low': '''\
 This category suggests that the likelihood of the predicted event occurring \
 is relatively small, based on the historical data and patterns the model has learned. \
