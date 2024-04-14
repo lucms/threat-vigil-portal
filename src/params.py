@@ -1,6 +1,13 @@
 ENV = 'prod'
 BUCKET_NAME = "threat-vigil-tmp-files"
 OAUTH_CLIENT_SECRET = "threat-vigil-portal-oauth-client-prod"
+SQUARESPACE_API_SECRET = 'squarespace-api-key'
+SQUARESPACE_API_VERSION = '1.0'
+BASE_URL = f'https://api.squarespace.com/{SQUARESPACE_API_VERSION}/profiles'
+SEARCH_URL_TEMPLATE = BASE_URL+'/?filter={f}'
+DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
+ACCOUNT_MIN_TIME = 365
+
 
 EMPTY_PAGE_MESSAGE = """\
 ## Nothing to display
@@ -10,9 +17,7 @@ If you think this is an error, please contact the system admin at info@threatvig
 
 ADMIN_EMAILS = [
     'lucas.miura.threat.vigil@gmail.com',
-    'info@threatvigil.com',
-    'threatvigil@gmail.com',
-    'luc.ms22@gmail.com'
+    'threatvigil@gmail.com'
 ]
 
 SECRET_PROJECT_ID = 964526035193

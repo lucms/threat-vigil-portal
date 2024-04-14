@@ -1,11 +1,14 @@
 from google.cloud import secretmanager
 from httpx_oauth.clients.google import GoogleOAuth2
 from params import *
+from datetime import datetime, timedelta
 import streamlit as st
 import json
 import asyncio
 import logging
 import time
+import requests
+
 
 
 # decorator function to measure execution time
@@ -41,6 +44,10 @@ def fetch_oauth_client_data():
     return json.loads(access_secret_version(OAUTH_CLIENT_SECRET, SECRET_PROJECT_ID))
 
 
+def fetch_squarespace_api_key():
+    return access_secret_version(SQUARESPACE_API_SECRET, SECRET_PROJECT_ID)
+
+
 async def write_authorization_url(client,
                                   redirect_uri,
                                   state=None):
@@ -66,7 +73,31 @@ async def get_email(client,
     return user_id, user_email
 
 
-def authenticate_user(main_function):
+def validate_squarespace_user(email):
+    api_key = fetch_squarespace_api_key()
+    search_url = SEARCH_URL_TEMPLATE.format(f=f'email,{email}')
+
+    HEADERS = {
+        'Authorization': f'Bearer {api_key}',
+    }
+
+    response = requests.get(search_url, headers=HEADERS)
+
+    response_json = response.json()['profiles']
+
+    if len(response_json) == 0:
+        return False
+    
+    profile = response_json[0]
+    profile_has_active_plan = datetime.strptime(profile['createdOn'], DATETIME_FORMAT) >= (datetime.now() - timedelta(days=ACCOUNT_MIN_TIME))
+    profile_has_ccount = profile['hasAccount'] == True
+
+    profile_is_valid = profile_has_active_plan and profile_has_ccount
+
+    return profile_is_valid
+
+
+def authenticate_user_oauth(main_function):
     client_data = fetch_oauth_client_data()
     client_id = client_data['client_id']
     client_secret = client_data['client_secret']
@@ -128,3 +159,30 @@ def authenticate_user(main_function):
             st.markdown('# Sorry, the Threat Vigil Portal is not available for general access yet.')
         else:
             main_function()
+
+
+def authenticate_user(main_function):
+
+    if st.session_state.get('user_email') is not None:
+        main_function()
+    
+    else:
+        placeholder = st.empty()
+        with placeholder.form(key='email_form'):
+            email = st.text_input('Email')
+            submit_button = st.form_submit_button('Submit')
+
+
+        if submit_button:
+            if email in ADMIN_EMAILS:
+                authenticate_user_oauth(main_function)
+            else:
+                    valid_email = validate_squarespace_user(email)
+                    if valid_email:
+                        st.session_state.user_email = email
+                        st.session_state.user_id = email
+                        logging.info(f'INFO:: Session started for user {email}')
+                        placeholder.empty()
+                        main_function()
+                    else:
+                        st.error('Invalid email. Please, try again.')
