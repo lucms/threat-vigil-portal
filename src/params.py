@@ -1,5 +1,10 @@
 ENV = 'prod'
+
+PROJECT_ID = 'threat-vigil-prod'
+TRAIN_TOPIC_ID = 'elt-ml-train-topic'
+PREDICT_TOPIC_ID = 'ml-predict-topic'
 BUCKET_NAME = "threat-vigil-tmp-files"
+
 OAUTH_CLIENT_SECRET = "threat-vigil-portal-oauth-client-prod"
 SQUARESPACE_API_SECRET = 'squarespace-api-key'
 SQUARESPACE_API_VERSION = '1.0'

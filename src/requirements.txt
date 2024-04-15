@@ -5,6 +5,7 @@ httpx-oauth
 google-cloud-bigquery
 google-cloud-storage
 google-cloud-logging
+google-cloud-pubsub
 google-api-python-client
 google-api-core
 Pillow
