@@ -10,4 +10,4 @@ ENV PORT=
 
 COPY . .
 
-CMD streamlit run app.py --server.port=${PORT} --browser.serverAddress="0.0.0.0"
+CMD streamlit run app.py --server.port=${PORT} --browser.serverAddress="0.0.0.0" --client.toolbarMode=minimal
