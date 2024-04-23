@@ -42,6 +42,10 @@ DATASETS = [
     {
         'name': 'base_data',
         'blob': 'data/pipelines/gva_weather_guns_city_level.csv'
+    },
+    {
+        'name': 'city_data',
+        'blob': 'data/city_data.csv'
     }
 ]
 
@@ -54,7 +58,8 @@ PAGE_NAMES = [
 DATASET_SORT_COLUMNS = {
     'city_state_predictions': ['yearmonth', 'state', 'city'],
     'state_predictions': ['yearmonth', 'state'],
-    'base_data': ['yearmonth', 'state', 'city']
+    'base_data': ['yearmonth', 'state', 'city'],
+    'city_data': ['city']
 }
 
 PREDICTION_DESCRIPTIONS = {

@@ -19,7 +19,7 @@ def load_datasets():
     for dataset in DATASETS:
         dataset_name = dataset['name']
 
-        blob = bucket.blob( dataset['blob'])
+        blob = bucket.blob(dataset['blob'])
     
         # Download file and read as pickle
         local_filename = LOCAL_FILENAME.format(dataset=dataset_name)
@@ -49,14 +49,17 @@ def display_sidebar(datasets):
     )
 
     if selected_page == 'Gun Violence Threat Assessment':
+
+        states = datasets['city_data']['state_name'].sort_values().unique()
+
         state = st.sidebar.selectbox(
             'Select a state',
-            datasets['base_data']['state'].unique()
+            states
         )
 
-        cities = datasets['base_data'].query(
-            f'state == "{state}"'
-        )['city'].unique()
+        cities = datasets['city_data'].query(
+            f'state_name == "{state}"'
+        )['city'].sort_values().unique()
 
         city = st.sidebar.selectbox(
             'Select a city',
