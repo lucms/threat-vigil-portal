@@ -40,7 +40,7 @@ def display_sidebar(datasets):
     if st.session_state.user_email not in ADMIN_EMAILS:
         page_names = [
             'Home',
-            'Mass Shooting Threat Assessment'
+            'Gun Violence Threat Assessment'
         ]
 
     selected_page = st.sidebar.radio(
@@ -48,7 +48,7 @@ def display_sidebar(datasets):
         page_names
     )
 
-    if selected_page == 'Mass Shooting Threat Assessment':
+    if selected_page == 'Gun Violence Threat Assessment':
         state = st.sidebar.selectbox(
             'Select a state',
             datasets['base_data']['state'].unique()
@@ -137,7 +137,7 @@ def load_page(selected_page, datasets, filtered_datasets, selected_filters):
             selected_filters
         )
     
-    elif selected_page == 'Mass Shooting Threat Assessment':
+    elif selected_page == 'Gun Violence Threat Assessment':
         return search_page.display_page(
             filtered_datasets['city_state_predictions'],
             filtered_datasets['state_predictions'],

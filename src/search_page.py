@@ -11,12 +11,12 @@ def display_city_page(city_state_predictions, state_predictions, base_data, unfi
     city = selected_filters['city']
     state = selected_filters['state']
     
-    st.markdown(f'# Mass shooting threat assessment')
+    st.markdown(f'# Gun Violence threat assessment')
     st.markdown(f'## {city}, {state}')
 
 
     st.markdown('''
-    Assess the probability of a mass shooting incident happening in the next 30 days.
+    Assess the probability of a gun violence incident happening in the next 30 days.
     ''')
 
     if city_state_predictions.empty:
@@ -47,7 +47,7 @@ def display_city_page(city_state_predictions, state_predictions, base_data, unfi
         CALL_TO_ACTION = 'Please be cautious and report any suspicious activity to the authorities.'
         st.markdown(CALL_TO_ACTION)
 
-    # Next, displaying recent mass shootings    
+    # Next, displaying recent gun violence incidents    
     NUM_DISPLAY_YEARMONTHS = 2
     last_yearmonth = prediction_date - pd.DateOffset(months=NUM_DISPLAY_YEARMONTHS)
     last_yearmonth = last_yearmonth.strftime('%Y-%m')
@@ -63,15 +63,15 @@ def display_city_page(city_state_predictions, state_predictions, base_data, unfi
         [DISPLAY_COLS]
         .groupby('city')
         .sum()
-        .rename(columns={'counts':'Total mass shootings in the last two months'})
+        .rename(columns={'counts':'Total gun violence incidents in the last two months'})
     )
 
-    st.markdown('### Mass shootings in the last two months')
+    st.markdown('### Gun violence incidents in the last two months')
     if not last_shootings_df.empty:
-        st.markdown(f'List of  mass shootings in {city}, {state} in the last two months.')
+        st.markdown(f'List of gun violence incidents in {city}, {state} in the last two months.')
         st.dataframe(last_shootings_df, use_container_width=True)
     else:
-        st.markdown(f'There were no mass shootings in the last two months for {city}, {state} at our database.')
+        st.markdown(f'There were no gun violence incidents in the last two months for {city}, {state} at our database.')
 
 
 def display_state_page(city_state_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):
@@ -104,7 +104,7 @@ def display_state_page(city_state_predictions, state_predictions, base_data, unf
         st.markdown(CALL_TO_ACTION)
 
 
-    # Next, display recent mass shootings
+    # Next, display recent gun violence incidents
     NUM_DISPLAY_YEARMONTHS = 2
     last_yearmonth = prediction_date - pd.DateOffset(months=NUM_DISPLAY_YEARMONTHS)
     last_yearmonth = last_yearmonth.strftime('%Y-%m')
@@ -121,15 +121,15 @@ def display_state_page(city_state_predictions, state_predictions, base_data, unf
         .groupby('city')
         ['counts']
         .sum()
-        .rename('Total mass shootings in the last two months')
+        .rename('Total gun violence incidents in the last two months')
     )
 
-    st.markdown('### Mass shootings in the last two months')
+    st.markdown('### Gun violence incidents in the last two months')
     if not last_shootings_df.empty:
-        st.markdown(f'List of  mass shootings in {state} in the last two months.')
+        st.markdown(f'List of gun violence incidents in {state} in the last two months.')
         st.dataframe(last_shootings_df, use_container_width=True)
     else:
-        st.markdown(f'There were no mass shootings in the last two months for {state} at our database.')
+        st.markdown(f'There were no gun violence incidents in the last two months for {state} at our database.')
 
 
 def display_page(city_state_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):

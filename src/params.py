@@ -47,7 +47,7 @@ DATASETS = [
 
 PAGE_NAMES = [
     'Home',
-    'Mass Shooting Threat Assessment',
+    'Gun Violence Threat Assessment',
     'Admin Page'
 ]
 
