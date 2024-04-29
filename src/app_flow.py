@@ -5,6 +5,7 @@ import pandas as pd
 import home_page
 import search_page
 import admin_page
+import re
 
 
 @st.cache_data(ttl=60*15)
@@ -30,6 +31,8 @@ def load_datasets():
             pd.read_csv(local_filename)
             .sort_values(DATASET_SORT_COLUMNS[dataset_name])
         )
+
+    datasets['zip_predictions']['zip_code'] = datasets['zip_predictions']['zip_code'].astype(str)
 
     return datasets
 
@@ -198,6 +201,9 @@ def load_page(selected_page, datasets, filtered_datasets, selected_filters):
             st.markdown('# Gun Violence Threat Assessment')
 
             st.markdown('Please submit a city, state and zip code to see results.')
+            
+        elif not re.match(r'(^\d{5}$)|(^\d{5}-\d{4}$)', selected_filters['zip']):
+            st.error('Please enter a valid zip code')
             
         else:
             return search_page.display_page(
