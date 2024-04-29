@@ -32,8 +32,8 @@ LOCAL_FILENAME = './{dataset}.csv'
 
 DATASETS = [
     {
-        'name': 'city_state_predictions',
-        'blob': 'predictions/city_state_predictions.csv'
+        'name': 'zip_predictions',
+        'blob': 'predictions/zip_city_state_predictions.csv'
     },
     {
         'name': 'state_predictions',
@@ -41,7 +41,7 @@ DATASETS = [
     },
     {
         'name': 'base_data',
-        'blob': 'data/pipelines/gva_weather_guns_city_level.csv'
+        'blob': 'data/pipelines/gva_weather_guns_zip_level.csv'
     },
     {
         'name': 'city_data',
@@ -56,9 +56,9 @@ PAGE_NAMES = [
 ]
 
 DATASET_SORT_COLUMNS = {
-    'city_state_predictions': ['yearmonth', 'state', 'city'],
+    'zip_predictions': ['yearmonth', 'state', 'city', 'zip_code'],
     'state_predictions': ['yearmonth', 'state'],
-    'base_data': ['yearmonth', 'state', 'city'],
+    'base_data': ['yearmonth', 'state', 'city', 'zip_code'],
     'city_data': ['city']
 }
 

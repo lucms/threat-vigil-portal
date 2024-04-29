@@ -4,22 +4,23 @@ from params import *
 from datetime import datetime
 
 
-def display_city_page(city_state_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):
+def display_zip_page(zip_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):
     """
     Displays the page based on the context.
     """
+    zip = selected_filters['zip']
     city = selected_filters['city']
     state = selected_filters['state']
     
     st.markdown(f'# Gun Violence threat assessment')
-    st.markdown(f'## {city}, {state}')
+    st.markdown(f'## {zip}, {city}, {state}')
 
 
     st.markdown('''
     Assess the probability of a gun violence incident happening in the next 30 days.
     ''')
 
-    if city_state_predictions.empty:
+    if zip_predictions.empty:
         prediction_proba_string = f'-'
         label = "Very Low"
 
@@ -27,11 +28,11 @@ def display_city_page(city_state_predictions, state_predictions, base_data, unfi
         prediction_date = pd.to_datetime(prediction_yearmonth, format='%Y-%m')  
 
     else:
-        prediction = city_state_predictions['prediction'].values[0].round(3)
+        prediction = zip_predictions['prediction'].values[0].round(3)
         prediction_proba_string = f'{prediction * 100:.1f}%'
-        label = city_state_predictions['predicted_label'].values[0]
+        label = zip_predictions['predicted_label'].values[0]
         
-        prediction_yearmonth = city_state_predictions['yearmonth'].values[0]
+        prediction_yearmonth = zip_predictions['yearmonth'].values[0]
         prediction_date = pd.to_datetime(prediction_yearmonth, format='%Y-%m')
     
     st.markdown(f'Predictions valid for the next 30 days.')
@@ -74,7 +75,7 @@ def display_city_page(city_state_predictions, state_predictions, base_data, unfi
         st.markdown(f'There were no gun violence incidents in the last two months for {city}, {state} at our database.')
 
 
-def display_state_page(city_state_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):
+def display_state_page(zip_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):
     """
     Displays the page based on the context.
     """
@@ -132,13 +133,13 @@ def display_state_page(city_state_predictions, state_predictions, base_data, unf
         st.markdown(f'There were no gun violence incidents in the last two months for {state} at our database.')
 
 
-def display_page(city_state_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):
+def display_page(zip_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):
     """
     Displays the page based on the context.
     """
 
-    display_city_page(
-        city_state_predictions, 
+    display_zip_page(
+        zip_predictions, 
         state_predictions, 
         base_data,
         unfiltered_base_data,
@@ -148,7 +149,7 @@ def display_page(city_state_predictions, state_predictions, base_data, unfiltere
     st.divider()
 
     display_state_page(
-        city_state_predictions, 
+        zip_predictions, 
         state_predictions, 
         base_data, 
         unfiltered_base_data,
