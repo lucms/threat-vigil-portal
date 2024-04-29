@@ -28,7 +28,7 @@ def load_datasets():
 
         # Loads dataset as pandas dataframe
         datasets[dataset_name] = (
-            pd.read_csv(local_filename)
+            pd.read_csv(local_filename, dtype=DATASET_DTYPES[dataset_name])
             .sort_values(DATASET_SORT_COLUMNS[dataset_name])
         )
 

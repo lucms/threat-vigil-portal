@@ -49,6 +49,17 @@ DATASETS = [
     }
 ]
 
+DATASET_DTYPES = {
+    'zip_predictions': {
+        'zip_code': str
+    },
+    'state_predictions': None,
+    'base_data': {
+        'zip_code': str
+    },
+    'city_data': None
+}
+
 PAGE_NAMES = [
     'Home',
     'Gun Violence Threat Assessment',
