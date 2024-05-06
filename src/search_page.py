@@ -48,32 +48,6 @@ def display_zip_page(zip_predictions, state_predictions, base_data, unfiltered_b
         CALL_TO_ACTION = 'Please be cautious and report any suspicious activity to the authorities.'
         st.markdown(CALL_TO_ACTION)
 
-    # Next, displaying recent gun violence incidents    
-    NUM_DISPLAY_YEARMONTHS = 2
-    last_yearmonth = prediction_date - pd.DateOffset(months=NUM_DISPLAY_YEARMONTHS)
-    last_yearmonth = last_yearmonth.strftime('%Y-%m')
-    
-    last_shootings_df = unfiltered_base_data.query(f'\
-        yearmonth >= "{last_yearmonth}" and state == "{state}" and city == "{city}" and\
-        counts > 0\
-    ')
-
-    DISPLAY_COLS = ['counts', 'city']
-
-    last_shootings_df = (last_shootings_df
-        [DISPLAY_COLS]
-        .groupby('city')
-        .sum()
-        .rename(columns={'counts':'Total gun violence incidents in the last two months'})
-    )
-
-    st.markdown('### Gun violence incidents in the last two months')
-    if not last_shootings_df.empty:
-        st.markdown(f'List of gun violence incidents in {city}, {state} in the last two months.')
-        st.dataframe(last_shootings_df, use_container_width=True)
-    else:
-        st.markdown(f'There were no gun violence incidents in the last two months for {city}, {state} at our database.')
-
 
 def display_state_page(zip_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):
     """
@@ -103,34 +77,6 @@ def display_state_page(zip_predictions, state_predictions, base_data, unfiltered
     if label in ('Medium High', 'High'):
         CALL_TO_ACTION = 'Please be cautious and report any suspicious activity to the authorities.'
         st.markdown(CALL_TO_ACTION)
-
-
-    # Next, display recent gun violence incidents
-    NUM_DISPLAY_YEARMONTHS = 2
-    last_yearmonth = prediction_date - pd.DateOffset(months=NUM_DISPLAY_YEARMONTHS)
-    last_yearmonth = last_yearmonth.strftime('%Y-%m')
-    
-    last_shootings_df = unfiltered_base_data.query(f'\
-        yearmonth >= "{last_yearmonth}" and state == "{state}" and\
-        counts > 0\
-    ')
-
-    DISPLAY_COLS = ['city', 'counts']
-
-    last_shootings_df = (last_shootings_df
-        [DISPLAY_COLS]
-        .groupby('city')
-        ['counts']
-        .sum()
-        .rename('Total gun violence incidents in the last two months')
-    )
-
-    st.markdown('### Gun violence incidents in the last two months')
-    if not last_shootings_df.empty:
-        st.markdown(f'List of gun violence incidents in {state} in the last two months.')
-        st.dataframe(last_shootings_df, use_container_width=True)
-    else:
-        st.markdown(f'There were no gun violence incidents in the last two months for {state} at our database.')
 
 
 def display_page(zip_predictions, state_predictions, base_data, unfiltered_base_data, selected_filters):

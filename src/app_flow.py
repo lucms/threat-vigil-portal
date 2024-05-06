@@ -76,7 +76,7 @@ def display_sidebar(datasets):
             )
 
             submit_button = st.form_submit_button('Submit')
-
+            st.markdown('If the provided zip code is invalid, only state predictions are valid.')
             if submit_button:
                 st.session_state.search_form_submitted = True
                 selected_filters = {
