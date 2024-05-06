@@ -11,6 +11,8 @@ st.set_page_config(
 
 def main():
 
+    st.markdown('Mobile Users: Click on the > to open the sidebar, and the x to close it.')
+    st.sidebar.markdown('Mobile Users: Click on the > to open the sidebar, and the x to close it.')
     datasets = app_flow.load_datasets()
 
     selected_filters, selected_page = app_flow.display_sidebar(datasets)

@@ -103,7 +103,6 @@ def authenticate_user_oauth(main_function):
     client_secret = client_data['client_secret']
     redirect_uri = client_data['redirect_uris'][ENV]
 
-    print(redirect_uri)
 
     state_param = st.query_params.to_dict().get('state', [None])[0]
 
@@ -176,13 +175,14 @@ def authenticate_user(main_function):
         if submit_button:
             if email in ADMIN_EMAILS:
                 authenticate_user_oauth(main_function)
+
             else:
-                    valid_email = validate_squarespace_user(email)
-                    if valid_email:
-                        st.session_state.user_email = email
-                        st.session_state.user_id = email
-                        logging.info(f'INFO:: Session started for user {email}')
-                        placeholder.empty()
-                        main_function()
-                    else:
-                        st.error('Invalid email. Please, try again.')
+                valid_email = validate_squarespace_user(email)
+                if valid_email:
+                    st.session_state.user_email = email
+                    st.session_state.user_id = email
+                    logging.info(f'INFO:: Session started for user {email}')
+                    placeholder.empty()
+                    main_function()
+                else:
+                    st.error('Invalid email. Please, try again.')

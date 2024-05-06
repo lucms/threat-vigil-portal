@@ -1,7 +1,7 @@
 import streamlit as st
 
 
-def display_page(city_state_predictions, state_predictions, selected_filters):
+def display_page(zip_predictions, state_predictions, selected_filters):
     """
     Displays the page based on the context.
     """
