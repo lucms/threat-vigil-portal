@@ -6,10 +6,9 @@ PREDICT_TOPIC_ID = 'ml-predict-topic'
 BUCKET_NAME = "threat-vigil-tmp-files"
 
 OAUTH_CLIENT_SECRET = "threat-vigil-portal-oauth-client-prod"
-SQUARESPACE_API_SECRET = 'squarespace-api-key'
-SQUARESPACE_API_VERSION = '1.0'
-BASE_URL = f'https://api.squarespace.com/{SQUARESPACE_API_VERSION}/profiles'
-SEARCH_URL_TEMPLATE = BASE_URL+'/?filter={f}'
+HUBSPOT_API_SECRET = 'hubspot-api-key'
+
+BASE_URL = f'https://api.hubapi.com/crm/v3/objects'
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 ACCOUNT_MIN_TIME = 365
 
