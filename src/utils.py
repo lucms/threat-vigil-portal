@@ -88,6 +88,10 @@ def validate_hubspot_user(email):
                 'operator': 'EQ',
                 'value': email
             }
+        ],
+        "properties": [
+            "createdate", "email", "firstname", 
+            "lastname", "hs_object_id", "squarespace_subscriber"
         ]
     }
 
@@ -98,9 +102,16 @@ def validate_hubspot_user(email):
 
     if len(results) == 0:
         return False
-        
-    # After, check if profile has active subscription
+    
+    # Check if it's a Squarespace subscriber
     profile = results[0]
+    is_squarespace_subscriber = profile['properties'].get('squarespace_subscriber', None)
+
+    if is_squarespace_subscriber is not None:
+        if int(is_squarespace_subscriber) == 1:
+            return True
+
+    # After, check if profile has active subscription
     profile_id = profile['id']
     search_subscription_url = f'{BASE_URL}/subscriptions/search'
     data = {
