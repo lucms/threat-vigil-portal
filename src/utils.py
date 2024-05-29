@@ -10,7 +10,6 @@ import time
 import requests
 
 
-
 # decorator function to measure execution time
 def time_this(func):
     def wrapper(*args, **kwargs):
@@ -44,8 +43,8 @@ def fetch_oauth_client_data():
     return json.loads(access_secret_version(OAUTH_CLIENT_SECRET, SECRET_PROJECT_ID))
 
 
-def fetch_squarespace_api_key():
-    return access_secret_version(SQUARESPACE_API_SECRET, SECRET_PROJECT_ID)
+def fetch_hubspot_api_key():
+    return access_secret_version(HUBSPOT_API_SECRET, SECRET_PROJECT_ID)
 
 
 async def write_authorization_url(client,
@@ -73,28 +72,68 @@ async def get_email(client,
     return user_id, user_email
 
 
-def validate_squarespace_user(email):
-    api_key = fetch_squarespace_api_key()
-    search_url = SEARCH_URL_TEMPLATE.format(f=f'email,{email}')
+def validate_hubspot_user(email):
 
+    api_key = fetch_hubspot_api_key()
     HEADERS = {
         'Authorization': f'Bearer {api_key}',
     }
 
-    response = requests.get(search_url, headers=HEADERS)
+    # First, search if profile exists
+    list_profile_url = f'{BASE_URL}/contacts/search'
+    data = {
+        'filters': [
+            {
+                'propertyName': 'email',
+                'operator': 'EQ',
+                'value': email
+            }
+        ],
+        "properties": [
+            "createdate", "email", "firstname", 
+            "lastname", "hs_object_id", "squarespace_subscriber"
+        ]
+    }
 
-    response_json = response.json()['profiles']
+    response = requests.post(list_profile_url, headers=HEADERS, json=data)
+    response_json = response.json()
 
-    if len(response_json) == 0:
+    results = response_json.get('results', [])
+
+    if len(results) == 0:
         return False
     
-    profile = response_json[0]
-    profile_has_active_plan = datetime.strptime(profile['createdOn'], DATETIME_FORMAT) >= (datetime.now() - timedelta(days=ACCOUNT_MIN_TIME))
-    profile_has_ccount = profile['hasAccount'] == True
+    # Check if it's a Squarespace subscriber
+    profile = results[0]
+    is_squarespace_subscriber = profile['properties'].get('squarespace_subscriber', None)
 
-    profile_is_valid = profile_has_active_plan and profile_has_ccount
+    if is_squarespace_subscriber is not None:
+        if int(is_squarespace_subscriber) == 1:
+            return True
 
-    return profile_is_valid
+    # After, check if profile has active subscription
+    profile_id = profile['id']
+    search_subscription_url = f'{BASE_URL}/subscriptions/search'
+    data = {
+        'filters': [
+            {
+                "propertyName": "associations.contact",
+                "operator": "EQ",
+                "value": profile_id
+            },
+            {
+                "propertyName": "hs_status",
+                "operator": "EQ",
+                "value": "active"
+            }
+        ]
+    }
+
+    subscription_response = requests.post(search_subscription_url, headers=HEADERS, json=data)
+    subscription_response_json = subscription_response.json().get('results', [])
+    has_active_subscription = len(subscription_response_json) > 0
+    
+    return has_active_subscription
 
 
 def authenticate_user_oauth(main_function):
@@ -177,7 +216,7 @@ def authenticate_user(main_function):
                 authenticate_user_oauth(main_function)
 
             else:
-                valid_email = validate_squarespace_user(email)
+                valid_email = validate_hubspot_user(email)
                 if valid_email:
                     st.session_state.user_email = email
                     st.session_state.user_id = email
