@@ -1,11 +1,28 @@
-ENV = 'prod'
+import os
+from dotenv import load_dotenv
 
-PROJECT_ID = 'threat-vigil-prod'
+load_dotenv()
+
+PROJECT_ID =  os.getenv('PROJECT_ID')
+
+if PROJECT_ID is None:
+    raise ValueError('PROJECT_ID environment variable not set.')
+
+if PROJECT_ID == 'threat-vigil-prod':
+    BUCKET_NAME = 'threat-vigil-tmp-files'
+    OAUTH_CLIENT_SECRET = "threat-vigil-portal-oauth-client-prod"
+    ENV = 'prod'
+    SECRET_PROJECT_ID = 964526035193
+
+else:
+    BUCKET_NAME = 'threat-vigil-stg-tmp-files'
+    OAUTH_CLIENT_SECRET = "threat-vigil-portal-oauth-client-stg"
+    ENV = 'stg'
+    SECRET_PROJECT_ID = 531745979735
+    
 TRAIN_TOPIC_ID = 'elt-ml-train-topic'
 PREDICT_TOPIC_ID = 'ml-predict-topic'
-BUCKET_NAME = "threat-vigil-tmp-files"
 
-OAUTH_CLIENT_SECRET = "threat-vigil-portal-oauth-client-prod"
 HUBSPOT_API_SECRET = 'hubspot-api-key'
 
 BASE_URL = f'https://api.hubapi.com/crm/v3/objects'
@@ -23,8 +40,6 @@ ADMIN_EMAILS = [
     'lucas.miura.threat.vigil@gmail.com',
     'threatvigil@gmail.com'
 ]
-
-SECRET_PROJECT_ID = 964526035193
 
 DEFAULT_ENCODING = 'iso-8859-1'
 LOCAL_FILENAME = './{dataset}.csv'

@@ -13,3 +13,4 @@ pyarrow
 db-dtypes
 pandas
 protobuf
+python-dotenv
