@@ -63,6 +63,31 @@ DATASETS = [
     }
 ]
 
+TRAINING_SUMMARY_ZIP_LEVEL_FILENAME = 'training_summary_zip_level.json'
+TRAINING_SUMMARY_ZIP_LEVEL_FILE = f'./{TRAINING_SUMMARY_ZIP_LEVEL_FILENAME}'
+TRAINING_SUMMARY_ZIP_LEVEL_BLOB = f'training_summaries/{TRAINING_SUMMARY_ZIP_LEVEL_FILENAME}'
+
+TRAINING_SUMMARY_STATE_LEVEL_FILENAME = 'training_summary_state_level.json'
+TRAINING_SUMMARY_STATE_LEVEL_FILE = f'./{TRAINING_SUMMARY_STATE_LEVEL_FILENAME}'
+TRAINING_SUMMARY_STATE_LEVEL_BLOB = f'training_summaries/{TRAINING_SUMMARY_STATE_LEVEL_FILENAME}'
+
+
+AUX_FILES_TO_DOWNLOAD = [
+    {
+        'source_blob_name': TRAINING_SUMMARY_ZIP_LEVEL_BLOB,
+        'destination_file_name': TRAINING_SUMMARY_ZIP_LEVEL_FILE,
+    },
+    {
+        'source_blob_name': TRAINING_SUMMARY_STATE_LEVEL_BLOB,
+        'destination_file_name': TRAINING_SUMMARY_STATE_LEVEL_FILE
+    }
+]
+
+TRAINING_SUMMARY_MAP = {
+    TRAINING_SUMMARY_ZIP_LEVEL_FILE: 'zip_level',
+    TRAINING_SUMMARY_STATE_LEVEL_FILE: 'state_level'
+}
+
 DATASET_DTYPES = {
     'zip_predictions': {
         'zip_code': str

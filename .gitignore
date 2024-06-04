@@ -1,3 +1,5 @@
 keys/
 src/__pycache__/
 src/*.csv
+.env
+src/*.json
